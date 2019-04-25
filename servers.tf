@@ -15,7 +15,7 @@ resource "aws_instance" "jenkins-master" {
     destination = "/tmp/${var.script_name}"
   }
   provisioner "file" {
-    source = "./imaki_Frankfurt.pem"
+    source = "~/.ssh/${var.key_name}.pem"
     destination = "~/.ssh/clients.pem"
   }
   provisioner "remote-exec" {
@@ -28,7 +28,7 @@ resource "aws_instance" "jenkins-master" {
   connection {
     type = "ssh"
     user = "ubuntu"
-    private_key = "${file("imaki_Frankfurt.pem")}"
+    private_key = "${file("~/.ssh/imaki_Frankfurt.pem")}"
   }
 }
 
@@ -59,6 +59,6 @@ resource "aws_instance" "jenkins-client" {
   connection {
     type = "ssh"
     user = "ubuntu"
-    private_key = "${file("imaki_Frankfurt.pem")}"
+    private_key = "${file("~/.ssh/imaki_Frankfurt.pem")}"
   }
 }
