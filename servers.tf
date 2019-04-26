@@ -1,3 +1,4 @@
+# ================== JENKINS MASTER ==================== #
 resource "aws_instance" "jenkins-master" {
   ami = "${var.ami}"
   instance_type = "${var.instance_type}"
@@ -32,9 +33,9 @@ resource "aws_instance" "jenkins-master" {
   }
 }
 
-# ================== CLIENTS ==================== #
+# ================== JENKINS SLAVE NODES ==================== #
 resource "aws_instance" "jenkins-client" {
-  count = 2 # number of clients
+  count = 1 # number of clients
   ami             = "${var.ami}"
   instance_type   = "${var.instance_type}"
   key_name        = "${var.key_name}"
@@ -48,7 +49,7 @@ resource "aws_instance" "jenkins-client" {
   tags {
     Name = "jenkins-client-${count.index + 1}"
   }
-  provisioner "remote-exec" {
+  provisioner "remote-exec" { # Install Java on Jenkins-clients
     inline = [
       "sleep 10",
       "sudo apt-get update -y",
